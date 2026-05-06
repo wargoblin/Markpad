@@ -77,10 +77,10 @@ done
 - Reviews: `gh api "repos/wargoblin/Markpad/pulls/<n>/reviews" --jq '.[] | select(.user.login == "copilot-pull-request-reviewer[bot]")'`
 - Inline: `gh api "repos/wargoblin/Markpad/pulls/<n>/comments" --jq '.[] | select(.user.login == "Copilot")'`
 
-**Claude Code Review** (`claude[bot]` или `claude-code-action[bot]` — точное имя зависит от установленного App):
-- Reviews: `gh api "repos/wargoblin/Markpad/pulls/<n>/reviews" --jq '.[] | select(.user.login | contains("claude"))'`
-- Inline: `gh api "repos/wargoblin/Markpad/pulls/<n>/comments" --jq '.[] | select(.user.login | contains("claude"))'`
-- Issue comments: `gh api "repos/wargoblin/Markpad/issues/<n>/comments" --jq '.[] | select(.user.login | contains("claude"))'`
+**Claude Code Review** (`claude[bot]` — confirmed на 2026-05-06 в `wargoblin/Markpad`. Workflow: `.github/workflows/claude.yml` (on-mention only — auto-on-PR variant intentionally not installed). Triggers on `issue_comment`, `pull_request_review_comment`, `pull_request_review`, `issues.opened|assigned`. Не триггерится на PR open / body — нужен отдельный comment с `@claude` mention.):
+- Reviews: `gh api "repos/wargoblin/Markpad/pulls/<n>/reviews" --jq '.[] | select(.user.login | test("(?i)claude"))'`
+- Inline: `gh api "repos/wargoblin/Markpad/pulls/<n>/comments" --jq '.[] | select(.user.login | test("(?i)claude"))'`
+- Issue comments: `gh api "repos/wargoblin/Markpad/issues/<n>/comments" --jq '.[] | select(.user.login | test("(?i)claude"))'`
 
 **Определение результата (для каждого бота отдельно):**
 - Review state "COMMENTED" + 0 inline → этот бот не нашёл проблем
