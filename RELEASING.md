@@ -76,7 +76,7 @@ Mention this clearly in the release notes for the first auto-update-capable vers
 ## Coverage notes
 
 - **macOS** uses one universal binary (`darwin-aarch64` + `darwin-x86_64` share the same `.app.tar.gz` and signature).
-- **Windows** uses NSIS (`*.nsis.zip`). The existing raw `.exe` distribution path is preserved alongside, so users who download `.exe` directly continue to work; only the auto-updater path uses NSIS bundles.
+- **Windows** uses NSIS — the auto-updater downloads `*-setup.exe` (verified by `*-setup.exe.sig`) and runs it in `passive` install mode. The existing raw portable `.exe` distribution path is preserved alongside, so users who download the portable `.exe` directly continue to work; only the auto-updater path uses the NSIS installer.
 - **Linux**: only `AppImage` users get auto-updates — `tauri-plugin-updater` doesn't support `.deb` or `.rpm`. `apt`/`rpm` users keep getting updates via their distro package manager (or by downloading a fresh package).
 - **Snap / Chocolatey**: independent distribution channels. Their update mechanisms are unaffected.
 
@@ -93,5 +93,5 @@ Mention this clearly in the release notes for the first auto-update-capable vers
 ## Out of scope (not handled by this workflow)
 
 - **Apple Developer ID code-signing & notarization** — `.app` bundles are unsigned. macOS may show a Gatekeeper warning on first launch. Minisign verification by the updater is independent of Apple code-signing.
-- **Windows Authenticode signing** — `.exe` and `.nsis.zip` are not signed with a code-signing certificate. Users may see a SmartScreen warning. Minisign verification is independent.
+- **Windows Authenticode signing** — neither the portable `.exe` nor the `*-setup.exe` NSIS installer is signed with a code-signing certificate. Users may see a SmartScreen warning. Minisign verification by the updater is independent.
 - **Retroactive signing** of older releases.
