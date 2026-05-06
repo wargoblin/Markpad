@@ -32,7 +32,11 @@ jobs:
 
       - name: Run Claude Code
         id: claude
-        uses: anthropics/claude-code-action@v1
+        # Pinned to v1.0.112 (2026-05-04) — last release before v1.0.113 regression
+        # where `claude install` exits 0 without placing the binary at
+        # ~/.local/bin/claude (see anthropics/claude-code-action#1290).
+        # Full-SHA pin per GitHub's third-party action security guidance.
+        uses: anthropics/claude-code-action@2cc1ac1331eac7a6a96d716dd204dd2888d0fcd2 # v1.0.112
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 
