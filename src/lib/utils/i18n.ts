@@ -152,6 +152,7 @@ export const translations: Record<LanguageCode, Translation> = {
             resetZoom: 'Reset Zoom',
             settings: 'Settings',
             about: 'About',
+            checkForUpdates: 'Check for updates…',
             github: 'GitHub',
             documentation: 'Documentation',
             home: 'Home',
