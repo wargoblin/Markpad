@@ -58,6 +58,8 @@ sudo snap install markpad
 
 Download the latest executable or installer from the [releases page](https://github.com/alecdotdev/Markpad/releases/latest) or from [markpad.sftwr.dev](https://markpad.sftwr.dev)
 
+> Once installed, Markpad self-updates from GitHub releases. The first install is manual; subsequent versions arrive via the in-app *Check for Updates…* menu (macOS app menu, or Settings on Windows/Linux). See [RELEASING.md](RELEASING.md) if you maintain Markpad releases.
+
 ## Installation from source
 
 - Clone the repository
