@@ -59,9 +59,9 @@ If you ever lose the private key:
 4. **Wait** ~30 min for matrix builds to finish, plus ~2 min for `generate-update-feed`.
 5. **Open the draft release** on the [Releases page](https://github.com/alecdotdev/Markpad/releases). Verify the assets:
    - **macOS**: `*.dmg`, `*.app.tar.gz`, `*.app.tar.gz.sig`
-   - **Windows x64**: `*_x64.exe`, `*_x64-setup.nsis.zip`, `*_x64-setup.nsis.zip.sig`
-   - **Windows ARM64**: `*_arm64.exe`, `*_arm64-setup.nsis.zip`, `*_arm64-setup.nsis.zip.sig`
-   - **Linux**: `*.deb`, `*.rpm`, `*.AppImage`, `*.AppImage.tar.gz`, `*.AppImage.tar.gz.sig`
+   - **Windows x64**: `*_x64.exe` (portable), `*_x64-setup.exe` (NSIS installer), `*_x64-setup.exe.sig`
+   - **Windows ARM64**: `*_arm64.exe` (portable), `*_arm64-setup.exe` (NSIS installer), `*_arm64-setup.exe.sig`
+   - **Linux**: `*.deb`, `*.rpm`, `*.AppImage`, `*.AppImage.sig`
    - **Update feed**: `latest.json` (one entry per successfully built platform)
 6. **Click "Publish release"** — this is the gate that activates auto-update for all clients pointing at `releases/latest/download/latest.json`.
 
