@@ -571,7 +571,7 @@
 						class="title-action-btn {tabManager.activeTab?.isSplit ? 'active' : ''}"
 						onclick={() => ontoggleSplit?.()}
 						aria-label={t('tooltip.toggleSplitView', currentLanguage)}
-											onmouseenter={(e) => showTooltip(e, t('tooltip.splitView', currentLanguage), 'H')}
+											onmouseenter={(e) => showTooltip(e, t('tooltip.splitView', currentLanguage), '\\')}
 						onmousedown={(e) => e.preventDefault()}
 						onmouseleave={hideTooltip}
 						transition:fly={{ x: 10, duration: 200 }}>
@@ -586,7 +586,7 @@
 								transform="rotate(0 13 2)"></rect
 							></svg>
 						<span class="action-label">{t('menu.splitView', currentLanguage)}</span>
-						<span class="menu-shortcut">{modifier}+H</span>
+						<span class="menu-shortcut">{modifier}+{'\\'}</span>
 					</button>
 				{:else if id === 'sync'}
 					<button

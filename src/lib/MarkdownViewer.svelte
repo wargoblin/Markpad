@@ -1921,9 +1921,9 @@ import { t } from './utils/i18n.js';
 				getCurrentWindow().close();
 			});
 		}
-		if (cmdOrCtrl && key === 'h') {
+		if (cmdOrCtrl && !e.shiftKey && !e.altKey && (code === 'Backslash' || code === 'IntlBackslash')) {
 			e.preventDefault();
-			if (tabManager.activeTabId) toggleSplitView(tabManager.activeTabId);
+			if (tabManager.activeTabId) toggleSplitView(tabManager.activeTabId, true);
 		}
 		if (cmdOrCtrl && key === 'e') {
 			e.preventDefault();

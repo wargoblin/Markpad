@@ -546,7 +546,10 @@
 		editor.addAction({
 			id: "view-toggle-split",
 			label: t('menu.toggleSplitView', uiLanguage),
-			keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyH],
+			keybindings: [
+				monaco.KeyMod.CtrlCmd | monaco.KeyCode.Backslash,
+				monaco.KeyMod.CtrlCmd | monaco.KeyCode.IntlBackslash,
+			],
 			run: () => ontoggleSplit?.(),
 		});
 
