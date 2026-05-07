@@ -972,7 +972,52 @@ pub fn run() {
                     .item(&PredefinedMenuItem::hide_others(app, None)?)
                     .item(&PredefinedMenuItem::show_all(app, None)?)
                     .separator()
-                    .item(&PredefinedMenuItem::quit(app, None)?)
+                    .item(
+                        &MenuItemBuilder::with_id(
+                            "menu-app-quit",
+                            format!("Quit {}", app_name),
+                        )
+                        .accelerator("CmdOrCtrl+Q")
+                        .build(app)?,
+                    )
+                    .build()?;
+
+                let file_submenu = SubmenuBuilder::new(app, "File")
+                    .item(
+                        &MenuItemBuilder::with_id("menu-file-new", "New File")
+                            .accelerator("CmdOrCtrl+T")
+                            .build(app)?,
+                    )
+                    .item(
+                        &MenuItemBuilder::with_id("menu-file-open", "Open File…")
+                            .accelerator("CmdOrCtrl+O")
+                            .build(app)?,
+                    )
+                    .item(
+                        &MenuItemBuilder::with_id("menu-file-close", "Close")
+                            .accelerator("CmdOrCtrl+W")
+                            .build(app)?,
+                    )
+                    .separator()
+                    .item(
+                        &MenuItemBuilder::with_id("menu-file-save", "Save")
+                            .accelerator("CmdOrCtrl+S")
+                            .build(app)?,
+                    )
+                    .item(
+                        &MenuItemBuilder::with_id("menu-file-save-as", "Save As…")
+                            .accelerator("CmdOrCtrl+Shift+S")
+                            .build(app)?,
+                    )
+                    .separator()
+                    .item(
+                        &MenuItemBuilder::with_id("menu-file-export-html", "Export as HTML")
+                            .build(app)?,
+                    )
+                    .item(
+                        &MenuItemBuilder::with_id("menu-file-export-pdf", "Export as PDF")
+                            .build(app)?,
+                    )
                     .build()?;
 
                 let edit_submenu = SubmenuBuilder::new(app, "Edit")
@@ -991,7 +1036,7 @@ pub fn run() {
                     .build()?;
 
                 let menu = MenuBuilder::new(app)
-                    .items(&[&app_submenu, &edit_submenu, &window_submenu])
+                    .items(&[&app_submenu, &file_submenu, &edit_submenu, &window_submenu])
                     .build()?;
 
                 app.set_menu(menu)?;
@@ -1078,8 +1123,11 @@ pub fn run() {
             list_directory_contents
         ])
         .on_menu_event(|app, event| {
-            if event.id().as_ref() == "check-updates" {
+            let id = event.id().as_ref();
+            if id == "check-updates" {
                 let _ = app.emit("menu-check-updates", ());
+            } else if id == "menu-app-quit" || id.starts_with("menu-file-") {
+                let _ = app.emit(id, ());
             }
         })
         .build(tauri::generate_context!())

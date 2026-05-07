@@ -2013,6 +2013,18 @@ import { t } from './utils/i18n.js';
 		const key = e.key.toLowerCase();
 		const code = e.code;
 
+		// On macOS the native menu accelerators (⌘T, ⌘W, ⌘S, ⌘Q) take priority
+		// via NSMenu; the JS keydown handler should not also fire for them, or
+		// we'd double-handle (e.g. open two new tabs on ⌘T). The !e.shiftKey
+		// guards keep ⌘⇧T (undo close tab) routed through this handler as
+		// before — only the bare combos are claimed by the menu.
+		if (settings.osType === 'macos' && cmdOrCtrl) {
+			if (key === 'q') return; // → menu-app-quit
+			if (key === 'w') return; // → menu-file-close
+			if (key === 's' && !e.shiftKey) return; // → menu-file-save
+			if (key === 't' && !e.shiftKey) return; // → menu-file-new
+		}
+
 		const isSplit = tabManager.activeTab?.isSplit;
 
 		if (cmdOrCtrl && key === 'w') {
@@ -2360,6 +2372,21 @@ import { t } from './utils/i18n.js';
 					updateStore.openDialog();
 				}),
 			);
+			// Native macOS menubar — Markpad ▸ Quit and File ▸ * — bridged
+			// to the same handlers the in-window burger button uses, so the
+			// menu and the burger stay behaviourally identical. Save mirrors
+			// the keydown guard (`isEditing || isSplit`) so menu ⌘S in pure
+			// view mode is a no-op, matching the keyboard shortcut.
+			unlisteners.push(await listen('menu-app-quit',         () => appExit()));
+			unlisteners.push(await listen('menu-file-new',         () => handleNewFile()));
+			unlisteners.push(await listen('menu-file-open',        () => selectFile()));
+			unlisteners.push(await listen('menu-file-close',       () => closeFile()));
+			unlisteners.push(await listen('menu-file-save',        () => {
+				if (isEditing || tabManager.activeTab?.isSplit) saveContent();
+			}));
+			unlisteners.push(await listen('menu-file-save-as',     () => saveContentAs()));
+			unlisteners.push(await listen('menu-file-export-html', () => exportAsHtml()));
+			unlisteners.push(await listen('menu-file-export-pdf', () => exportAsPdf()));
 			unlisteners.push(
 				await appWindow.onCloseRequested(async (event) => {
 					console.log('onCloseRequested triggered');
