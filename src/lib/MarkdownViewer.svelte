@@ -333,34 +333,6 @@ import { t } from './utils/i18n.js';
 		showHome = false;
 	});
 
-
-	function processInlineMath(root: Element) {
-		const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-			acceptNode(node) {
-				let curr = node.parentElement;
-				while (curr && curr !== root) {
-					if (['CODE', 'PRE', 'SCRIPT', 'STYLE'].includes(curr.tagName)) return NodeFilter.FILTER_REJECT;
-					curr = curr.parentElement;
-				}
-				return NodeFilter.FILTER_ACCEPT;
-			},
-		});
-
-		const toReplace: { node: Text; newText: string }[] = [];
-		let node: Node | null;
-		const regex = /(^|[^\\])\$(?!\s)([^$]*?[^\s\\])\$(?![\d])/g;
-		while ((node = walker.nextNode())) {
-			const text = (node as Text).nodeValue || '';
-			if (text.includes('$')) {
-				const newText = text.replace(regex, "$1\\($2\\)");
-				if (newText !== text) toReplace.push({ node: node as Text, newText });
-			}
-		}
-		for (const { node, newText } of toReplace) {
-			node.nodeValue = newText;
-		}
-	}
-
 	function processHighlights(root: Element) {
 		const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
 			acceptNode(node) {
